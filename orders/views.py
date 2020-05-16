@@ -1,7 +1,9 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
+from .forms import RegisterForm
 
 from .models import Pizza, Topping
 # Create your views here.
@@ -16,6 +18,18 @@ def index(request):
     }
     return render(request, "orders/index.html", context)
     # return HttpResponse("Project 3: TO DO")
+
+
+def registration_view(response):
+    if response.method == "POST":
+        form = RegisterForm(response.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/")
+    else:
+        form = RegisterForm()
+
+    return render(response, "orders/registration.html", {"form": form})
 
 
 def login_view(request):

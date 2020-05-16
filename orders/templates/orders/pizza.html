@@ -1,0 +1,36 @@
+{% extends "orders/base.html" %}
+
+{% block title %} Pizza {% endblock %}
+
+{% block body %}
+<h1>Pizza {{ pizza.id }}</h1>
+<ul>
+    <li>Origin: {{ pizza.origin }}</li>
+    <li>Price: {{ pizza.price }}</li>
+    <!--<li>Topping: {{ pizza.topping }}</li>-->
+</ul>
+<h2>Toppings</h2>
+<ul>
+    {% for topping in toppings %}
+    <li> {{ topping }} </li>
+    {% empty %}
+    <li>No toppings</li>
+    {% endfor %}
+</ul>
+<hr>
+
+<h2>Add a Topping</h2>
+{% if non_toppings %}
+<form action="{% url 'order' pizza.id %}" method="post">
+    <select name="topping">
+        {% for topping in non_toppings %}
+        <option value="{{ topping.id }}">{{ topping }}</option>
+        {% endfor%}
+    </select>
+    <input type="submit" value="Add topping">
+</form>
+{% else %}
+<div>No toppings to add.</div>
+{% endif %}
+<a href="{% url 'index' %}">Back to the menu</a>
+{% endblock %}

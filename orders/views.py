@@ -1,17 +1,37 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth import authenticate, login, logout
 
 from .models import Pizza, Topping
 # Create your views here.
 
 
 def index(request):
+    if not request.user.is_authenticated:
+        return render(request, "orders/login.html", {"message": None})
     context = {
-        "menu": Pizza.objects.all()
+        "menu": Pizza.objects.all(),
+        "user": request.user
     }
     return render(request, "orders/index.html", context)
     # return HttpResponse("Project 3: TO DO")
+
+
+def login_view(request):
+    username = request.POST["username"]
+    password = request.POST["password"]
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "orders/login.html", {"message": "Invalid credentials"})
+
+
+def logout_view(request):
+    logout(request)
+    return render(request, "orders/login.html", {"message": "Logged out."})
 
 
 def pizza(request, pizza_id):

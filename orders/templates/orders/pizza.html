@@ -22,6 +22,7 @@
 <h2>Add a Topping</h2>
 {% if non_toppings %}
 <form action="{% url 'order' pizza.id %}" method="post">
+    {% csrf_token %}
     <select name="topping">
         {% for topping in non_toppings %}
         <option value="{{ topping.id }}">{{ topping }}</option>

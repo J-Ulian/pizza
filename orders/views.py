@@ -3,9 +3,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .forms import RegisterForm
+from .forms import RegisterForm, CreateNewList
 
-from .models import Pizza, Topping
+from .models import Pizza, Topping, ToDoList, Item
 # Create your views here.
 
 
@@ -18,6 +18,33 @@ def index(request):
     }
     return render(request, "orders/index.html", context)
     # return HttpResponse("Project 3: TO DO")
+
+
+def listik(response, id):
+    ls = ToDoList.objects.get(id=id)
+
+    if ls in response.user.todolist.all():
+
+        if response.method == "POST":
+            if response.POST.get("save"):
+                for item in ls.item_set.all():
+                    if response.POST.get("c" + str(item.id)) == "clicked":
+                        item.complete = True
+                    else:
+                        item.complete = False
+
+                    item.save()
+
+            elif response.POST.get("newItem"):
+                txt = response.POST.get("new")
+
+                if len(txt) > 2:
+                    ls.item_set.create(text=txt, complete=False)
+                else:
+                    print("invalid")
+        return render(response, "orders/list.html", {"ls": ls})
+
+    return render(response, "orders/home.html", {})
 
 
 def registration_view(response):
@@ -75,3 +102,26 @@ def order(request, pizza_id):
 
     topping.pizzas.add(pizza)
     return HttpResponseRedirect(reverse("pizza", args=(pizza_id,)))
+
+
+def create(response):
+    if response.method == "POST":
+        form = CreateNewList(response.POST)
+
+        if form.is_valid():
+            n = form.cleaned_data["name"]
+            t = ToDoList(name=n)
+            t.save()
+            # adds the to do list to the current logged in user
+            response.user.todolist.add(t)
+
+            return HttpResponseRedirect("/%i" % t.id)
+
+    else:
+        form = CreateNewList()
+
+    return render(response, "orders/create.html", {"form": form})
+
+
+def view(response):
+    return render(response, "orders/view.html", {})

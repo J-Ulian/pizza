@@ -1,0 +1,19 @@
+{% extends "orders/base.html" %}
+
+{% block title %} Create an Account {% endblock %}
+
+{% block body %}
+
+{% if message %}
+<div>
+    {{ message }}
+</div>
+{% endif %}
+<h1>Sign Up</h1>
+<form method="POST" class="form-group">
+    {% load crispy_forms_tags %}
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">Register</button>
+</form>
+{% endblock %}

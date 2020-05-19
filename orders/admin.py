@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Pizza, Topping, ToDoList, Item
+from .models import Pizza, Topping
 # Register your models here.
 
 
@@ -19,5 +19,3 @@ class PizzaAdmin(admin.ModelAdmin):
 
 admin.site.register(Pizza, PizzaAdmin)
 admin.site.register(Topping, ToppingAdmin)
-admin.site.register(ToDoList)
-admin.site.register(Item)

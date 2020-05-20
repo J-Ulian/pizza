@@ -1,5 +1,8 @@
+from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+
 
 # Create your models here.
 
@@ -31,11 +34,11 @@ class Topping(models.Model):
         return f"{self.topping}"
 
 
-class Student(models.Model):
-    name = models.CharField(max_length=64)
+class Order(models.Model):
+    address = models.CharField(max_length=200, null=True)
     pizzas = models.ManyToManyField(Pizza, blank=True, related_name="orders")
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name="orderik", null=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.address}"

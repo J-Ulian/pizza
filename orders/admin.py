@@ -1,6 +1,8 @@
+from __future__ import unicode_literals
 from django.contrib import admin
 
-from .models import Pizza, Topping, Student
+
+from .models import Pizza, Topping, Order
 # Register your models here.
 
 
@@ -19,4 +21,4 @@ class PizzaAdmin(admin.ModelAdmin):
 
 admin.site.register(Pizza, PizzaAdmin)
 admin.site.register(Topping, ToppingAdmin)
-admin.site.register(Student)
+admin.site.register(Order)

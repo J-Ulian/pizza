@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'main.apps.MainConfig',
     'register.apps.RegisterConfig',
+    'accounts',
+    'products',
+    'shopping_cart',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +61,7 @@ ROOT_URLCONF = 'pizza.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,3 +130,15 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+
+PAYPAL_ACCOUNT_ID = 'freire1996-facilitator@gmail.com'
+if DEBUG:
+    DOMAIN_URL = 'http://127.0.0.1:8000'
+else:
+    DOMAIN_URL = 'https://www.onlyodd.co.za'
+
+if DEBUG:
+    # paypal
+    PAYPAL_CLIENT_ID = 'ATBOgSDNGSzTLnZ1GPb0iyA4EMOL0YdOpzKcjwhR54W1Bw6BR3ec2wIu9y4E65TYZ6WmtxaznRCHIahe'
+    PAYPAL_CLIENT_SECRET = 'EEB1vnsmXuQKl0qv42w8EaQjzLh7EAv7xwontOMsC_8Mr1OO5-1dt1dUs-FZCCpwYOf4-B-cyOS6H95_'
